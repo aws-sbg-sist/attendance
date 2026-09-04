@@ -1,0 +1,152 @@
+.form,
+.verified {
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid #d5dbdb;
+}
+
+.heading h2,
+.verified h2 {
+  margin: 0.35rem 0 0;
+  color: #161e2d;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.heading p:not(.step),
+.verified p:not(.verifiedLabel) {
+  margin: 0.6rem 0 0;
+  color: #545b64;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.step,
+.verifiedLabel {
+  margin: 0;
+  color: #687078;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.35rem;
+}
+
+.field label {
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.field input {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.75rem 0.9rem;
+  color: #161e2d;
+  background: #ffffff;
+  border: 2px solid #879196;
+  border-radius: 0.6rem;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.field input:hover:not(:disabled) {
+  border-color: #545b64;
+}
+
+.field input:focus-visible {
+  border-color: #146eb4;
+  outline: 0.2rem solid rgb(20 110 180 / 22%);
+  outline-offset: 0.1rem;
+}
+
+.field input[aria-invalid="true"] {
+  border-color: #b42318;
+}
+
+.field input:disabled {
+  color: #687078;
+  background: #f4f6f8;
+}
+
+.error {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem;
+  color: #991b1b;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.6rem;
+  font: inherit;
+  font-weight: 800;
+}
+
+.primaryAction {
+  width: 100%;
+  color: #101828;
+  background: #ff9900;
+  border: 2px solid #ff9900;
+}
+
+.primaryAction:hover:not(:disabled) {
+  background: #ec8b00;
+  border-color: #ec8b00;
+}
+
+.primaryAction:disabled {
+  color: #545b64;
+  background: #d5dbdb;
+  border-color: #d5dbdb;
+  cursor: wait;
+}
+
+.secondaryAction {
+  color: #146eb4;
+  background: #ffffff;
+  border: 2px solid #146eb4;
+}
+
+.secondaryAction:hover {
+  color: #ffffff;
+  background: #146eb4;
+}
+
+.primaryAction:focus-visible,
+.secondaryAction:focus-visible {
+  outline: 0.2rem solid #146eb4;
+  outline-offset: 0.2rem;
+}
+
+.verified {
+  padding: 1.25rem;
+  background: #ecfdf3;
+  border: 1px solid #a7f3d0;
+  border-radius: 0.75rem;
+}
+
+.verifiedLabel {
+  color: #065f46;
+}
+
+@media (max-width: 720px) {
+  .secondaryAction {
+    width: 100%;
+  }
+}

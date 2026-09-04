@@ -11,4 +11,16 @@ Task 2 adds the public event landing view and its open, not-open, closed, loadin
 - `/event/closed-event` - attendance closed
 - `/event/unknown-event` - event unavailable
 
-Registration forms, QR handling, participant verification, attendance submission, and receipt integration are not implemented in this task.
+QR handling, final participant preview, attendance submission, and receipt integration are not implemented in this task.
+
+## Task 3 fixture verification
+
+The registration-ID form uses local fixture responses until the shared public check-in contract is available.
+
+- `AWS001` - valid registration
+- `00125` - valid registration with leading zeroes
+- `SLOW001` - valid registration with a slow response
+- `ERROR001` - temporary service failure
+- Any other value, including disabled or wrong-event test IDs, returns the same generic verification failure
+
+The fixture never claims that attendance has been recorded. QR handling, final participant preview, attendance submission, and receipt integration remain out of scope.

@@ -1,4 +1,5 @@
 import type { PublicEvent } from "./types";
+import { RegistrationForm } from "./registration-form";
 import styles from "./event-landing.module.css";
 
 type EventLandingProps = {
@@ -105,12 +106,13 @@ export function EventLanding({ event }: EventLandingProps) {
               </div>
             </dl>
 
-            <button className={styles.primaryAction} type="button" disabled={!canCheckIn}>
-              {canCheckIn ? "Continue to check-in" : "Check-in unavailable"}
-            </button>
             {canCheckIn ? (
-              <p className={styles.actionHint}>Keep your registration ID ready.</p>
-            ) : null}
+              <RegistrationForm eventSlug={event.slug} />
+            ) : (
+              <button className={styles.primaryAction} type="button" disabled>
+                Check-in unavailable
+              </button>
+            )}
           </section>
         </div>
       </article>
