@@ -1,0 +1,288 @@
+.page {
+  min-height: 100vh;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  background:
+    radial-gradient(circle at top right, rgb(255 153 0 / 13%), transparent 32rem),
+    #f4f6f8;
+  color: #161e2d;
+}
+
+.shell,
+.unavailable {
+  width: min(100%, 68rem);
+  margin: 0 auto;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #d5dbdb;
+  border-radius: 1rem;
+  box-shadow: 0 1.25rem 3.5rem rgb(22 30 45 / 11%);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem clamp(1rem, 4vw, 2rem);
+  color: #ffffff;
+  background: #101828;
+  border-bottom: 0.25rem solid #ff9900;
+}
+
+.brandMark {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  color: #101828;
+  background: #ff9900;
+  border-radius: 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.eyebrow,
+.institute,
+.eventLabel,
+.actionHint {
+  margin: 0;
+}
+
+.eyebrow {
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.institute {
+  margin-top: 0.2rem;
+  color: #d5dbdb;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(1.5rem, 5vw, 4rem);
+  padding: clamp(1rem, 5vw, 3.5rem);
+}
+
+.poster {
+  display: flex;
+  min-height: 28rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  overflow: hidden;
+  color: #ffffff;
+  background:
+    linear-gradient(145deg, transparent 0 52%, rgb(255 153 0 / 94%) 52% 64%, transparent 64%),
+    linear-gradient(160deg, #243247, #101828 68%);
+  border-radius: 0.9rem;
+  box-shadow: 0 0.8rem 2rem rgb(22 30 45 / 18%);
+}
+
+.poster span {
+  margin-bottom: 0.65rem;
+  color: #ff9900;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.poster strong {
+  max-width: 15ch;
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  line-height: 1.05;
+}
+
+.details {
+  align-self: center;
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: fit-content;
+  margin-bottom: 1.75rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid;
+  border-radius: 0.55rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.notice span:last-child {
+  color: #545b64;
+}
+
+.noticeOpen {
+  color: #065f46;
+  background: #ecfdf3;
+  border-color: #a7f3d0;
+}
+
+.noticeWaiting {
+  flex-direction: column;
+  align-items: flex-start;
+  color: #854d0e;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.noticeClosed {
+  flex-direction: column;
+  align-items: flex-start;
+  color: #991b1b;
+  background: #fff1f2;
+  border-color: #fecdd3;
+}
+
+.liveDot {
+  width: 0.55rem;
+  height: 0.55rem;
+  background: #059669;
+  border-radius: 999px;
+}
+
+.eventLabel {
+  color: #687078;
+  font-size: 0.875rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.details h1,
+.unavailable h1 {
+  margin: 0.5rem 0 0;
+  font-size: clamp(2.1rem, 6vw, 4.4rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.facts {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.facts div {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eaeded;
+}
+
+.facts dt {
+  color: #687078;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.facts dd {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.2rem;
+  color: #101828;
+  background: #ff9900;
+  border: 2px solid #ff9900;
+  border-radius: 0.6rem;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.primaryAction:not(:disabled):hover,
+.secondaryAction:hover {
+  background: #ec8b00;
+  border-color: #ec8b00;
+}
+
+.primaryAction:focus-visible,
+.secondaryAction:focus-visible {
+  outline: 0.2rem solid #146eb4;
+  outline-offset: 0.2rem;
+}
+
+.primaryAction:disabled {
+  color: #687078;
+  background: #eaeded;
+  border-color: #eaeded;
+  cursor: not-allowed;
+}
+
+.actionHint {
+  margin-top: 0.75rem;
+  color: #545b64;
+  font-size: 0.875rem;
+}
+
+.unavailable {
+  padding: clamp(1.5rem, 7vw, 4rem);
+}
+
+.unavailable .brandMark {
+  margin-bottom: 1.5rem;
+}
+
+.unavailable p:not(.eyebrow) {
+  max-width: 38rem;
+  margin: 1.25rem 0 2rem;
+  color: #545b64;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .shell,
+  .unavailable {
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .poster {
+    min-height: 13rem;
+  }
+
+  .details h1,
+  .unavailable h1 {
+    font-size: clamp(2.15rem, 12vw, 3.25rem);
+  }
+
+  .notice {
+    width: 100%;
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    width: 100%;
+  }
+}
