@@ -1,7 +1,7 @@
 .form,
 .verified {
-  margin-top: 1.75rem;
-  padding-top: 1.75rem;
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
   border-top: 1px solid #d5dbdb;
 }
 
@@ -9,14 +9,14 @@
 .verified h2 {
   margin: 0.35rem 0 0;
   color: #161e2d;
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(1.4rem, 3vw, 1.75rem);
   line-height: 1.15;
   letter-spacing: -0.025em;
 }
 
 .heading p:not(.step),
 .verified p:not(.verifiedLabel) {
-  margin: 0.6rem 0 0;
+  margin: 0.4rem 0 0;
   color: #545b64;
   font-size: 0.95rem;
   line-height: 1.5;
@@ -35,7 +35,7 @@
 .field {
   display: grid;
   gap: 0.5rem;
-  margin-top: 1.35rem;
+  margin-top: 0.9rem;
 }
 
 .field label {
@@ -45,7 +45,7 @@
 
 .field input {
   width: 100%;
-  min-height: 3.25rem;
+  min-height: 3rem;
   padding: 0.75rem 0.9rem;
   color: #161e2d;
   background: #ffffff;
@@ -88,10 +88,10 @@
 .primaryAction,
 .secondaryAction {
   display: inline-flex;
-  min-height: 3.25rem;
+  min-height: 3rem;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   padding: 0.8rem 1.2rem;
   border-radius: 0.6rem;
   font: inherit;

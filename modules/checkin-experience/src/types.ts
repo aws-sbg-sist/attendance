@@ -1,4 +1,5 @@
 export type PublicEventState = "open" | "not-open" | "closed";
+export type TokenGateState = "valid" | "missing" | "expired" | "invalid" | "wrong-event";
 
 export type PublicEvent = {
   slug: string;

@@ -24,3 +24,17 @@ The registration-ID form uses local fixture responses until the shared public ch
 - Any other value, including disabled or wrong-event test IDs, returns the same generic verification failure
 
 The fixture never claims that attendance has been recorded. QR handling, final participant preview, attendance submission, and receipt integration remain out of scope.
+
+## Task 4 QR gate fixtures
+
+The QR deep link sends the opaque `ticket` to `/event/:slug/check-in`. The server validates it, creates a short-lived signed HttpOnly gate cookie, and redirects to the clean event URL. The participant page never receives or displays the raw ticket.
+
+- `/event/aws-cloud-workshop/check-in?ticket=live-aws-token` - current token for the open fixture event
+- `/event/aws-cloud-workshop/check-in?ticket=expired-aws-token` - expired token
+- `/event/aws-cloud-workshop/check-in?ticket=tampered-token` - unknown or tampered token
+- `/event/aws-cloud-workshop/check-in?ticket=live-other-event` - token belonging to another event
+- `/event/aws-cloud-workshop` without a signed gate cookie - venue QR required
+
+Token generation, signing, rotation, nonce storage, replay protection, and anti-abuse controls remain owned by Member 3 and are not implemented here.
+
+Fixture token and participant data live only in server-imported development modules. Production disables the fixture validation routes and requires `TOKEN_SECRET` for signed gate sessions. The real Member 3 and Technical Lead services must replace these adapters before deployment.

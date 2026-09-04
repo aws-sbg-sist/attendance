@@ -1,9 +1,11 @@
 import type { PublicEvent } from "./types";
+import type { TokenGateState } from "./types";
 import { RegistrationForm } from "./registration-form";
 import styles from "./event-landing.module.css";
 
 type EventLandingProps = {
   event: PublicEvent | null;
+  tokenGate: TokenGateState;
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-IN", {
@@ -52,7 +54,37 @@ function StateMessage({ event }: { event: PublicEvent }) {
   );
 }
 
-export function EventLanding({ event }: EventLandingProps) {
+function TokenGateMessage({ state }: { state: Exclude<TokenGateState, "valid"> }) {
+  if (state === "missing") {
+    return (
+      <section className={styles.qrGate} aria-labelledby="qr-gate-title">
+        <p className={styles.qrLabel}>Venue code required</p>
+        <h2 id="qr-gate-title">Scan the event code</h2>
+        <p>Scan the currently displayed QR code at the venue to continue check-in.</p>
+      </section>
+    );
+  }
+
+  if (state === "expired") {
+    return (
+      <section className={`${styles.qrGate} ${styles.qrGateError}`} aria-labelledby="qr-expired-title">
+        <p className={styles.qrLabel}>Event code expired</p>
+        <h2 id="qr-expired-title">Scan the current venue code</h2>
+        <p>This event code has expired. Scan the code currently displayed at the venue.</p>
+      </section>
+    );
+  }
+
+  return (
+    <section className={`${styles.qrGate} ${styles.qrGateError}`} aria-labelledby="qr-invalid-title">
+      <p className={styles.qrLabel}>Event code not verified</p>
+      <h2 id="qr-invalid-title">Scan the current venue code</h2>
+      <p>This event code could not be verified. Scan the code currently displayed at the venue.</p>
+    </section>
+  );
+}
+
+export function EventLanding({ event, tokenGate }: EventLandingProps) {
   if (!event) {
     return (
       <main className={styles.page}>
@@ -106,12 +138,14 @@ export function EventLanding({ event }: EventLandingProps) {
               </div>
             </dl>
 
-            {canCheckIn ? (
-              <RegistrationForm eventSlug={event.slug} />
-            ) : (
+            {!canCheckIn ? (
               <button className={styles.primaryAction} type="button" disabled>
                 Check-in unavailable
               </button>
+            ) : tokenGate !== "valid" ? (
+              <TokenGateMessage state={tokenGate} />
+            ) : (
+              <RegistrationForm eventSlug={event.slug} />
             )}
           </section>
         </div>

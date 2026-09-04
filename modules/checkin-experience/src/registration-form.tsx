@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useId, useState } from "react";
-import { verifyFixtureRegistration } from "./verify-registration.mjs";
 import styles from "./registration-form.module.css";
 
 type RegistrationFormProps = {
@@ -33,9 +32,24 @@ export function RegistrationForm({ eventSlug }: RegistrationFormProps) {
     setState({ kind: "pending" });
 
     try {
-      const result = await verifyFixtureRegistration(eventSlug, submittedId);
+      const response = await fetch(
+        `/api/dev/events/${encodeURIComponent(eventSlug)}/registration/verify`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ registrationId: submittedId }),
+        },
+      );
 
-      if (!result.ok) {
+      const result = (await response.json()) as {
+        ok?: boolean;
+        participantName?: string;
+        unavailable?: boolean;
+      };
+
+      if (!response.ok && result.unavailable) throw new Error("Service unavailable");
+
+      if (!response.ok || !result.ok || typeof result.participantName !== "string") {
         setState({
           kind: "error",
           message: "Registration details could not be verified. Check the ID and try again.",

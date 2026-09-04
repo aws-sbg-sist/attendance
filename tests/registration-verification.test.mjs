@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { verifyFixtureRegistration } from "../modules/checkin-experience/src/verify-registration.mjs";
+import { verifyFixtureRegistration } from "../modules/checkin-experience/src/server/fixtures.mjs";
 
 test("verifies a valid event registration", async () => {
   const result = await verifyFixtureRegistration("aws-cloud-workshop", "AWS001");
