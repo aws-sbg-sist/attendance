@@ -339,3 +339,67 @@
     width: 100%;
   }
 }
+
+@media (max-width: 480px) {
+  .header {
+    gap: 0.65rem;
+    padding-block: 0.65rem;
+  }
+
+  .brandMark {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 0.78rem;
+  }
+
+  .eyebrow,
+  .institute {
+    font-size: 0.75rem;
+  }
+
+  .content {
+    padding-block: 0.75rem;
+  }
+
+  .notice {
+    margin-bottom: 0.7rem;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .eventLabel {
+    font-size: 0.78rem;
+  }
+
+  .details h1,
+  .unavailable h1 {
+    margin-top: 0.35rem;
+    font-size: 1.85rem;
+    line-height: 1.05;
+  }
+
+  .facts {
+    gap: 0.2rem;
+    margin: 0.7rem 0;
+  }
+
+  .facts div {
+    padding-bottom: 0.35rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .header,
+  .content {
+    padding-inline: 0.85rem;
+  }
+
+  .details h1,
+  .unavailable h1 {
+    font-size: 2rem;
+  }
+
+  .facts div {
+    grid-template-columns: 3.75rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+}

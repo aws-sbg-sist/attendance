@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./attendance-result": "./src/attendance-result.mjs",
     "./server/fixtures": "./src/server/fixtures.mjs"
   },
   "peerDependencies": {

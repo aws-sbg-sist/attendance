@@ -41,6 +41,14 @@
   text-transform: uppercase;
 }
 
+.verified:focus,
+.confirmed:focus,
+.alreadyRecorded:focus,
+.resultError:focus {
+  outline: 0.2rem solid rgb(20 110 180 / 32%);
+  outline-offset: 0.2rem;
+}
+
 .field {
   display: grid;
   gap: 0.5rem;
@@ -268,5 +276,65 @@
 
   .receiptFacts {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .form,
+  .verified,
+  .confirmed,
+  .alreadyRecorded,
+  .resultError {
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+  }
+
+  .heading h2,
+  .verified h2,
+  .confirmed h2,
+  .alreadyRecorded h2,
+  .resultError h2 {
+    font-size: 1.3rem;
+  }
+
+  .heading p:not(.step),
+  .verified p:not(.verifiedLabel),
+  .confirmed p:not(.verifiedLabel),
+  .alreadyRecorded p:not(.verifiedLabel),
+  .resultError p:not(.resultLabel) {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+  }
+
+  .field {
+    gap: 0.35rem;
+    margin-top: 0.6rem;
+  }
+
+  .field input {
+    min-height: 2.75rem;
+    padding-block: 0.6rem;
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    min-height: 3rem;
+    margin-top: 0.6rem;
+    padding-block: 0.65rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .verified,
+  .confirmed,
+  .alreadyRecorded,
+  .resultError {
+    padding: 1rem;
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    min-height: 3.25rem;
+    padding-inline: 0.8rem;
   }
 }

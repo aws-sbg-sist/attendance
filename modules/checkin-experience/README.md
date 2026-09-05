@@ -48,3 +48,24 @@ After verification, the participant reviews their identity and event details bef
 - Denied or unavailable browser location - configured location-policy rejection with a retry path
 
 The success screen exposes the PDF download interface only when the shared backend supplies `confirmationPdfUrl`. The development adapter returns `null`, because confirmation PDF creation belongs to Member 4. The adapter demonstrates response compatibility but does not persist attendance; the Technical Lead's backend remains authoritative.
+
+## Component and integration map
+
+- `event-landing.tsx` - server-rendered public event identity and attendance-window states
+- `registration-form.tsx` - client-side ID entry, verification preview, location request and terminal result UI
+- `attendance-result.mjs` - validates the server response before the UI displays attendance success
+- `fixture-events.ts` - development event records shaped like the shared `Event` contract
+- `server/fixtures.mjs` - server-only development adapter for registration and attendance outcomes
+
+Expected integration endpoints:
+
+- `GET /public/events/:slug` supplies the public event contract.
+- `POST /public/events/:slug/token/validate` supplies the Member 3 token-gate result.
+- `POST /public/events/:slug/check-in` returns `recorded`, `already-recorded`, `locked`, `location-rejected`, `closed`, `not-open`, `invalid`, or `unavailable`.
+- A recorded response includes the verified participant name and registration ID, server-generated `checkedInAt`, attendance reference, and an optional same-origin `confirmationPdfUrl` from Member 4.
+
+The current `/api/dev/...` routes are local adapters only and are disabled in production. Replace them with the shared endpoints during integration. The participant page never downloads the full participant list, never decides attendance success, and never stores attendance on local disk.
+
+## Accessibility and performance
+
+All controls use semantic form elements, visible focus styles and minimum touch heights. Errors are associated with the registration field, and focus moves to verification and terminal-result panels after asynchronous transitions. The layout includes narrow-phone, phone, tablet and desktop breakpoints and respects reduced-motion settings in the loading view. No video, animation framework, dashboard bundle, participant dataset or PDF generator is loaded by the participant route.

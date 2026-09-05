@@ -2,6 +2,7 @@ import type { PublicEvent } from "./types";
 
 const fixtureEvents: Record<string, PublicEvent> = {
   "aws-cloud-workshop": {
+    id: "EVT_2026_09_15",
     slug: "aws-cloud-workshop",
     name: "AWS Cloud Foundations Workshop",
     venue: "Central Seminar Hall, Sathyabama Institute of Science and Technology",
@@ -10,12 +11,14 @@ const fixtureEvents: Record<string, PublicEvent> = {
     attendanceOpensAt: "2026-09-15T09:30:00+05:30",
     attendanceClosesAt: "2026-09-15T11:00:00+05:30",
     posterUrl: null,
+    brochureUrl: null,
     venueLat: 12.8729,
     venueLng: 80.2184,
     venueRadiusM: 250,
     status: "open",
   },
   "upcoming-event": {
+    id: "EVT_2026_09_22",
     slug: "upcoming-event",
     name: "Serverless Builders Session",
     venue: "Block 5 Auditorium, Sathyabama Institute of Science and Technology",
@@ -24,12 +27,14 @@ const fixtureEvents: Record<string, PublicEvent> = {
     attendanceOpensAt: "2026-09-22T13:30:00+05:30",
     attendanceClosesAt: "2026-09-22T15:00:00+05:30",
     posterUrl: null,
+    brochureUrl: null,
     venueLat: null,
     venueLng: null,
     venueRadiusM: null,
     status: "not-open",
   },
   "closed-event": {
+    id: "EVT_2026_09_08",
     slug: "closed-event",
     name: "Introduction to Cloud Security",
     venue: "Main Block Conference Hall, Sathyabama Institute of Science and Technology",
@@ -38,6 +43,7 @@ const fixtureEvents: Record<string, PublicEvent> = {
     attendanceOpensAt: "2026-09-08T09:30:00+05:30",
     attendanceClosesAt: "2026-09-08T11:00:00+05:30",
     posterUrl: null,
+    brochureUrl: null,
     venueLat: null,
     venueLng: null,
     venueRadiusM: null,

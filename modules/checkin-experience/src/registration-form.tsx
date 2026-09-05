@@ -1,6 +1,8 @@
 "use client";
 
-import { FormEvent, useId, useRef, useState } from "react";
+import { FormEvent, useEffect, useId, useRef, useState } from "react";
+import { parseAttendanceResult } from "./attendance-result.mjs";
+import type { AttendanceReceipt, AttendanceResult } from "./attendance-result.mjs";
 import styles from "./registration-form.module.css";
 
 type RegistrationFormProps = {
@@ -18,22 +20,6 @@ type LocationResult =
   | { status: "granted"; latitude: number; longitude: number; accuracy: number }
   | { status: "denied" | "unavailable" };
 
-type AttendanceReceipt = {
-  status: "recorded" | "already-recorded";
-  participantName: string;
-  registrationId: string;
-  checkedInAt: string;
-  attendanceReference: string;
-  confirmationPdfUrl: string | null;
-};
-
-type AttendanceFailure =
-  | { status: "locked"; retryAfterSeconds: number }
-  | { status: "location-rejected"; locationStatus: "denied" | "unavailable" | "outside" }
-  | { status: "closed" | "not-open" | "unavailable" | "invalid" };
-
-type AttendanceResult = AttendanceReceipt | AttendanceFailure;
-
 type FormState =
   | { kind: "idle" }
   | { kind: "pending" }
@@ -50,18 +36,7 @@ const attendanceTimeFormatter = new Intl.DateTimeFormat("en-IN", {
 });
 
 function isAttendanceReceipt(result: AttendanceResult): result is AttendanceReceipt {
-  return (
-    (result.status === "recorded" || result.status === "already-recorded") &&
-    typeof result.participantName === "string" &&
-    typeof result.registrationId === "string" &&
-    typeof result.attendanceReference === "string" &&
-    typeof result.checkedInAt === "string" &&
-    !Number.isNaN(Date.parse(result.checkedInAt)) &&
-    (result.confirmationPdfUrl === null ||
-      (typeof result.confirmationPdfUrl === "string" &&
-        result.confirmationPdfUrl.startsWith("/") &&
-        !result.confirmationPdfUrl.startsWith("//")))
-  );
+  return result.status === "recorded" || result.status === "already-recorded";
 }
 
 function requestLocation(): Promise<LocationResult> {
@@ -86,8 +61,13 @@ export function RegistrationForm({ event }: RegistrationFormProps) {
   const helpId = useId();
   const messageId = useId();
   const submissionLocked = useRef(false);
+  const statePanel = useRef<HTMLElement>(null);
   const [registrationId, setRegistrationId] = useState("");
   const [state, setState] = useState<FormState>({ kind: "idle" });
+
+  useEffect(() => {
+    if (state.kind === "verified" || state.kind === "result") statePanel.current?.focus();
+  }, [state.kind]);
 
   async function handleSubmit(formEvent: FormEvent<HTMLFormElement>) {
     formEvent.preventDefault();
@@ -153,13 +133,8 @@ export function RegistrationForm({ event }: RegistrationFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ registrationId: verifiedRegistrationId, location }),
       });
-      const result = (await response.json()) as AttendanceResult;
-      if (!result || typeof result !== "object" || !("status" in result) || result.status === "invalid") {
-        throw new Error("Check-in was not confirmed");
-      }
-      if ((result.status === "recorded" || result.status === "already-recorded") && !isAttendanceReceipt(result)) {
-        throw new Error("Invalid attendance receipt");
-      }
+      const result = parseAttendanceResult(await response.json());
+      if (!result || result.status === "invalid") throw new Error("Check-in was not confirmed");
       setState({ kind: "result", participantName, registrationId: verifiedRegistrationId, result });
     } catch {
       submissionLocked.current = false;
@@ -176,7 +151,7 @@ export function RegistrationForm({ event }: RegistrationFormProps) {
     if (isAttendanceReceipt(result)) {
       const isDuplicate = result.status === "already-recorded";
       return (
-        <section className={isDuplicate ? styles.alreadyRecorded : styles.confirmed} role="status" aria-labelledby={`${inputId}-result-title`}>
+        <section ref={statePanel} tabIndex={-1} className={isDuplicate ? styles.alreadyRecorded : styles.confirmed} role="status" aria-labelledby={`${inputId}-result-title`}>
           <p className={styles.verifiedLabel}>{isDuplicate ? "Already recorded" : "Attendance confirmed"}</p>
           <h2 id={`${inputId}-result-title`}>{isDuplicate ? "Your attendance already exists" : `You're checked in, ${result.participantName}`}</h2>
           <p>{isDuplicate ? "Attendance has already been recorded for this registration." : "The server successfully recorded your attendance."}</p>
@@ -218,7 +193,7 @@ export function RegistrationForm({ event }: RegistrationFormProps) {
             : { label: "Service unavailable", title: "Attendance could not be recorded", message: "Please retry or contact the event team." };
 
     return (
-      <section className={styles.resultError} role="alert" aria-labelledby={`${inputId}-result-title`}>
+      <section ref={statePanel} tabIndex={-1} className={styles.resultError} role="alert" aria-labelledby={`${inputId}-result-title`}>
         <p className={styles.resultLabel}>{failureContent.label}</p>
         <h2 id={`${inputId}-result-title`}>{failureContent.title}</h2>
         <p>{failureContent.message}</p>
@@ -230,7 +205,7 @@ export function RegistrationForm({ event }: RegistrationFormProps) {
   if (state.kind === "verified" || state.kind === "locating" || state.kind === "submitting") {
     const isCompleting = state.kind !== "verified";
     return (
-      <section className={styles.verified} aria-labelledby={`${inputId}-verified-title`}>
+      <section ref={statePanel} tabIndex={-1} className={styles.verified} aria-labelledby={`${inputId}-verified-title`}>
         <p className={styles.verifiedLabel}>Registration verified</p>
         <h2 id={`${inputId}-verified-title`}>{state.participantName}</h2>
         <p>Registration ID: {state.registrationId}</p>
