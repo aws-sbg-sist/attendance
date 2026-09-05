@@ -69,3 +69,7 @@ The current `/api/dev/...` routes are local adapters only and are disabled in pr
 ## Accessibility and performance
 
 All controls use semantic form elements, visible focus styles and minimum touch heights. Errors are associated with the registration field, and focus moves to verification and terminal-result panels after asynchronous transitions. The layout includes narrow-phone, phone, tablet and desktop breakpoints and respects reduced-motion settings in the loading view. No video, animation framework, dashboard bundle, participant dataset or PDF generator is loaded by the participant route.
+
+## Visual system
+
+The participant surface uses a dark technical product direction inspired by the restraint and density of premium developer tools, without copying their branding or layouts. Semantic tokens live in `apps/web/app/globals.css`; the event and form modules consume graphite surfaces, hairline borders, compact radii, system sans-serif type, monospace metadata, and AWS orange only for the primary action. Mobile keeps the check-in workspace before the compact event poster, and motion is limited to short control feedback with a reduced-motion fallback.
