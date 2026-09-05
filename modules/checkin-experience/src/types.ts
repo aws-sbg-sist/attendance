@@ -10,5 +10,8 @@ export type PublicEvent = {
   attendanceOpensAt: string;
   attendanceClosesAt: string;
   posterUrl: string | null;
+  venueLat: number | null;
+  venueLng: number | null;
+  venueRadiusM: number | null;
   status: PublicEventState;
 };

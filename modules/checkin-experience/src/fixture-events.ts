@@ -10,6 +10,9 @@ const fixtureEvents: Record<string, PublicEvent> = {
     attendanceOpensAt: "2026-09-15T09:30:00+05:30",
     attendanceClosesAt: "2026-09-15T11:00:00+05:30",
     posterUrl: null,
+    venueLat: 12.8729,
+    venueLng: 80.2184,
+    venueRadiusM: 250,
     status: "open",
   },
   "upcoming-event": {
@@ -21,6 +24,9 @@ const fixtureEvents: Record<string, PublicEvent> = {
     attendanceOpensAt: "2026-09-22T13:30:00+05:30",
     attendanceClosesAt: "2026-09-22T15:00:00+05:30",
     posterUrl: null,
+    venueLat: null,
+    venueLng: null,
+    venueRadiusM: null,
     status: "not-open",
   },
   "closed-event": {
@@ -32,6 +38,9 @@ const fixtureEvents: Record<string, PublicEvent> = {
     attendanceOpensAt: "2026-09-08T09:30:00+05:30",
     attendanceClosesAt: "2026-09-08T11:00:00+05:30",
     posterUrl: null,
+    venueLat: null,
+    venueLng: null,
+    venueRadiusM: null,
     status: "closed",
   },
 };

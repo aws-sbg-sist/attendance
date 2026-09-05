@@ -145,7 +145,19 @@ export function EventLanding({ event, tokenGate }: EventLandingProps) {
             ) : tokenGate !== "valid" ? (
               <TokenGateMessage state={tokenGate} />
             ) : (
-              <RegistrationForm eventSlug={event.slug} />
+              <RegistrationForm
+                event={{
+                  slug: event.slug,
+                  name: event.name,
+                  venue: event.venue,
+                  date: formatDate(event.date),
+                  time: formatTime(event.startsAt),
+                  locationEnabled:
+                    event.venueLat !== null &&
+                    event.venueLng !== null &&
+                    event.venueRadiusM !== null,
+                }}
+              />
             )}
           </section>
         </div>

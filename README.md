@@ -1,6 +1,6 @@
 # AWS SBG Event Attendance Platform
 
-Portable project foundation for the attendance platform described in the team workflow. This task establishes only the shared repository layout and the Member 2 module boundary. Participant check-in features are intentionally not implemented yet.
+Portable Member 2 check-in experience for the attendance platform described in the team workflow. The current development flow covers event display, venue-code gating, registration verification, the final attendance preview, optional location capture, and server-confirmed submission.
 
 ## Requirements
 
@@ -15,6 +15,8 @@ npm run dev
 ```
 
 Open `http://localhost:3000` after the development server starts.
+
+For the local fixture flow, open `/event/aws-cloud-workshop/check-in?ticket=live-aws-token` and verify with registration ID `AWS001`. Fixture endpoints are disabled in production; persistence and the shared attendance backend remain outside Member 2's module.
 
 ## Commands
 

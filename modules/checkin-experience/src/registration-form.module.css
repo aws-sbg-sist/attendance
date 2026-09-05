@@ -1,12 +1,14 @@
 .form,
-.verified {
+.verified,
+.confirmed {
   margin-top: 1.1rem;
   padding-top: 1.1rem;
   border-top: 1px solid #d5dbdb;
 }
 
 .heading h2,
-.verified h2 {
+.verified h2,
+.confirmed h2 {
   margin: 0.35rem 0 0;
   color: #161e2d;
   font-size: clamp(1.4rem, 3vw, 1.75rem);
@@ -15,7 +17,8 @@
 }
 
 .heading p:not(.step),
-.verified p:not(.verifiedLabel) {
+.verified p:not(.verifiedLabel),
+.confirmed p:not(.verifiedLabel) {
   margin: 0.4rem 0 0;
   color: #545b64;
   font-size: 0.95rem;
@@ -128,6 +131,11 @@
   background: #146eb4;
 }
 
+.secondaryAction:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 .primaryAction:focus-visible,
 .secondaryAction:focus-visible {
   outline: 0.2rem solid #146eb4;
@@ -143,6 +151,48 @@
 
 .verifiedLabel {
   color: #065f46;
+}
+
+.previewFacts {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #d5dbdb;
+  border-radius: 0.6rem;
+}
+
+.previewFacts div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.previewFacts dt {
+  color: #687078;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.previewFacts dd {
+  margin: 0;
+  color: #161e2d;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.locationNote {
+  padding-left: 0.75rem;
+  border-left: 3px solid #146eb4;
+}
+
+.confirmed {
+  padding: 1.25rem;
+  background: #ecfdf3;
+  border: 1px solid #6ee7b7;
+  border-radius: 0.75rem;
 }
 
 @media (max-width: 720px) {
