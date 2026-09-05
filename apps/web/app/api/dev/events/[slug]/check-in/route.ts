@@ -1,4 +1,4 @@
-import { verifyFixtureRegistration } from "@attendance/checkin-experience/server/fixtures";
+import { submitFixtureAttendance } from "@attendance/checkin-experience/server/fixtures";
 import { cookies } from "next/headers";
 import { parseCheckInRequest } from "../../../../../../lib/check-in-request.mjs";
 import { GATE_COOKIE_NAME, readGateCookie } from "../../../../../../lib/gate-session.mjs";
@@ -33,12 +33,14 @@ export async function POST(request: Request, { params }: CheckInRouteContext) {
   if (!submission) return json({ ok: false }, 400);
 
   try {
-    const registration = await verifyFixtureRegistration(slug, submission.registrationId);
-    if (!registration.ok) return json({ ok: false }, 400);
+    const result = await submitFixtureAttendance(slug, submission.registrationId, submission.location);
+    if (result.status === "invalid") return json({ status: "invalid" }, 400);
+    if (result.status === "locked") return json(result, 429);
+    if (result.status === "location-rejected") return json(result, 422);
 
-    // This development adapter confirms only the local flow. The shared backend owns persistence.
-    return json({ ok: true }, 200);
+    // This development adapter returns the shared response shape but does not persist attendance.
+    return json(result, result.status === "already-recorded" ? 409 : 200);
   } catch {
-    return json({ ok: false, unavailable: true }, 503);
+    return json({ status: "unavailable" }, 503);
   }
 }

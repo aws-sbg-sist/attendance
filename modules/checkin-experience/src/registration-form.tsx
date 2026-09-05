@@ -18,6 +18,22 @@ type LocationResult =
   | { status: "granted"; latitude: number; longitude: number; accuracy: number }
   | { status: "denied" | "unavailable" };
 
+type AttendanceReceipt = {
+  status: "recorded" | "already-recorded";
+  participantName: string;
+  registrationId: string;
+  checkedInAt: string;
+  attendanceReference: string;
+  confirmationPdfUrl: string | null;
+};
+
+type AttendanceFailure =
+  | { status: "locked"; retryAfterSeconds: number }
+  | { status: "location-rejected"; locationStatus: "denied" | "unavailable" | "outside" }
+  | { status: "closed" | "not-open" | "unavailable" | "invalid" };
+
+type AttendanceResult = AttendanceReceipt | AttendanceFailure;
+
 type FormState =
   | { kind: "idle" }
   | { kind: "pending" }
@@ -25,7 +41,28 @@ type FormState =
   | { kind: "verified"; participantName: string; registrationId: string }
   | { kind: "locating"; participantName: string; registrationId: string }
   | { kind: "submitting"; participantName: string; registrationId: string }
-  | { kind: "confirmed"; participantName: string };
+  | { kind: "result"; participantName: string; registrationId: string; result: AttendanceResult };
+
+const attendanceTimeFormatter = new Intl.DateTimeFormat("en-IN", {
+  dateStyle: "medium",
+  timeStyle: "medium",
+  timeZone: "Asia/Kolkata",
+});
+
+function isAttendanceReceipt(result: AttendanceResult): result is AttendanceReceipt {
+  return (
+    (result.status === "recorded" || result.status === "already-recorded") &&
+    typeof result.participantName === "string" &&
+    typeof result.registrationId === "string" &&
+    typeof result.attendanceReference === "string" &&
+    typeof result.checkedInAt === "string" &&
+    !Number.isNaN(Date.parse(result.checkedInAt)) &&
+    (result.confirmationPdfUrl === null ||
+      (typeof result.confirmationPdfUrl === "string" &&
+        result.confirmationPdfUrl.startsWith("/") &&
+        !result.confirmationPdfUrl.startsWith("//")))
+  );
+}
 
 function requestLocation(): Promise<LocationResult> {
   if (!("geolocation" in navigator)) return Promise.resolve({ status: "unavailable" });
@@ -116,9 +153,14 @@ export function RegistrationForm({ event }: RegistrationFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ registrationId: verifiedRegistrationId, location }),
       });
-      const result = (await response.json()) as { ok?: boolean };
-      if (!response.ok || !result.ok) throw new Error("Check-in was not confirmed");
-      setState({ kind: "confirmed", participantName });
+      const result = (await response.json()) as AttendanceResult;
+      if (!result || typeof result !== "object" || !("status" in result) || result.status === "invalid") {
+        throw new Error("Check-in was not confirmed");
+      }
+      if ((result.status === "recorded" || result.status === "already-recorded") && !isAttendanceReceipt(result)) {
+        throw new Error("Invalid attendance receipt");
+      }
+      setState({ kind: "result", participantName, registrationId: verifiedRegistrationId, result });
     } catch {
       submissionLocked.current = false;
       setState({
@@ -128,12 +170,59 @@ export function RegistrationForm({ event }: RegistrationFormProps) {
     }
   }
 
-  if (state.kind === "confirmed") {
+  if (state.kind === "result") {
+    const { result } = state;
+
+    if (isAttendanceReceipt(result)) {
+      const isDuplicate = result.status === "already-recorded";
+      return (
+        <section className={isDuplicate ? styles.alreadyRecorded : styles.confirmed} role="status" aria-labelledby={`${inputId}-result-title`}>
+          <p className={styles.verifiedLabel}>{isDuplicate ? "Already recorded" : "Attendance confirmed"}</p>
+          <h2 id={`${inputId}-result-title`}>{isDuplicate ? "Your attendance already exists" : `You're checked in, ${result.participantName}`}</h2>
+          <p>{isDuplicate ? "Attendance has already been recorded for this registration." : "The server successfully recorded your attendance."}</p>
+          <dl className={styles.receiptFacts}>
+            <div><dt>Attendance time</dt><dd>{attendanceTimeFormatter.format(new Date(result.checkedInAt))}</dd></div>
+            <div><dt>Attendance reference</dt><dd>{result.attendanceReference}</dd></div>
+          </dl>
+          {result.confirmationPdfUrl ? (
+            <a className={styles.primaryAction} href={result.confirmationPdfUrl} download>Download confirmation PDF</a>
+          ) : (
+            <button className={styles.primaryAction} type="button" disabled>Confirmation PDF unavailable</button>
+          )}
+          {!result.confirmationPdfUrl ? <p className={styles.integrationNote}>The PDF download will activate when Member 4 provides the confirmation URL.</p> : null}
+        </section>
+      );
+    }
+
+    const retry = () => {
+      submissionLocked.current = false;
+      setState({ kind: "verified", participantName: state.participantName, registrationId: state.registrationId });
+    };
+
+    const failureContent = result.status === "locked"
+      ? { label: "Temporarily locked", title: "Too many unsuccessful attempts", message: `Please retry after ${result.retryAfterSeconds} seconds.` }
+      : result.status === "location-rejected"
+        ? {
+            label: "Location required",
+            title: "Venue location could not be verified",
+            message: result.locationStatus === "denied"
+              ? "Allow location access and retry, or contact the event team for help."
+              : result.locationStatus === "outside"
+                ? "Your device appears to be outside the configured venue area. Move to the venue and retry, or contact the event team."
+                : "Location is unavailable on this device. Retry or contact the event team for help.",
+          }
+        : result.status === "closed"
+          ? { label: "Attendance closed", title: "Attendance for this event is closed", message: "The server reports that the attendance window has ended." }
+          : result.status === "not-open"
+            ? { label: "Not open", title: "Attendance is not open yet", message: "Wait until the event attendance window opens, then retry." }
+            : { label: "Service unavailable", title: "Attendance could not be recorded", message: "Please retry or contact the event team." };
+
     return (
-      <section className={styles.confirmed} role="status" aria-labelledby={`${inputId}-confirmed-title`}>
-        <p className={styles.verifiedLabel}>Attendance confirmed</p>
-        <h2 id={`${inputId}-confirmed-title`}>{state.participantName}</h2>
-        <p>Your attendance was confirmed by the attendance service.</p>
+      <section className={styles.resultError} role="alert" aria-labelledby={`${inputId}-result-title`}>
+        <p className={styles.resultLabel}>{failureContent.label}</p>
+        <h2 id={`${inputId}-result-title`}>{failureContent.title}</h2>
+        <p>{failureContent.message}</p>
+        <button className={styles.secondaryAction} type="button" onClick={retry}>Retry attendance</button>
       </section>
     );
   }
