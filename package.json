@@ -1,0 +1,19 @@
+{
+  "name": "attendance",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "modules/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.9.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace=@attendance/web",
+    "build": "npm run build --workspace=@attendance/web",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
