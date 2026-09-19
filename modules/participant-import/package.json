@@ -1,0 +1,12 @@
+{
+  "name": "participant-import",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "tsx tests/parser.test.ts && tsx tests/validation.test.ts && tsx tests/duplicate-detection.test.ts && tsx tests/normalization.test.ts && tsx tests/import-participants.test.ts && tsx tests/search-participants.test.ts && tsx tests/update-participant.test.ts && tsx tests/deactivate-participant.test.ts"
+  },
+  "devDependencies": {
+    "typescript": "5.4.5",
+    "tsx": "4.19.2"
+  }
+}
