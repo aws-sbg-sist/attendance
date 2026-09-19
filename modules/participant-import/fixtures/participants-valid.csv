@@ -1,0 +1,9 @@
+registrationId,name,email,phone,college,department,section,year
+REG001,Aarav Kumar,aarav@example.com,9876500001,ABC Engineering College,CSE,A,2
+REG002,Diya Sharma,diya@example.com,9876500002,XYZ Institute of Technology,ECE,B,2
+REG003,Rohan Raj,rohan@example.com,9876500003,ABC Engineering College,IT,A,3
+REG004,Ananya Krish,ananya@example.com,9876500004,DEF University,CSE,C,1
+REG005,Arjun Menon,arjun@example.com,9876500005,XYZ Institute of Technology,ECE,A,3
+REG006,Meera Nair,meera@example.com,9876500006,DEF University,EEE,B,2
+REG007,Vishal Kumar,vishal@example.com,9876500007,ABC Engineering College,MECH,A,4
+REG008,Sneha Ravi,sneha@example.com,9876500008,XYZ Institute of Technology,CSE,B,2

@@ -1,0 +1,6 @@
+registrationId,name,email,phone,college,department,section,year
+REG101,Valid User,valid@example.com,9876500101,ABC Engineering College,CSE,A,2
+,Missing Registration ID,missing@example.com,9876500102,ABC Engineering College,ECE,A,2
+REG103,,noname@example.com,9876500103,XYZ Institute of Technology,CSE,B,3
+REG104,Invalid Email,not-an-email,9876500104,DEF University,IT,A,2
+REG105,Invalid Phone,phone@example.com,abc,DEF University,ECE,B,2

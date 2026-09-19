@@ -1,0 +1,6 @@
+registrationId,name,email,phone,college,department,section,year
+REG001,Aarav Kumar,aarav@example.com,9876500001,ABC Engineering College,CSE,A,2
+REG002,Diya Sharma,diya@example.com,9876500002,XYZ Institute of Technology,ECE,B,2
+REG001,Aarav Kumar Duplicate,duplicate@example.com,9876500099,ABC Engineering College,CSE,A,2
+REG003,Rohan Raj,rohan@example.com,9876500003,ABC Engineering College,IT,A,3
+REG003,Rohan Raj Duplicate,duplicate2@example.com,9876500098,ABC Engineering College,IT,A,3
