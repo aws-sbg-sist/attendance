@@ -1,0 +1,14 @@
+{
+  "name": "@attendance/checkin-experience",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./attendance-result": "./src/attendance-result.mjs",
+    "./server/fixtures": "./src/server/fixtures.mjs"
+  },
+  "peerDependencies": {
+    "react": "19.2.8"
+  }
+}
